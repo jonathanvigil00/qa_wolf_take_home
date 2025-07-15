@@ -4,8 +4,8 @@ const parseAgeToDate = (ageStr) => {
     if (!ageStr || ageStr === 'Unknown') return now;
   
     const [amount, unitRaw] = ageStr.split(' ');
-    const unit = unitRaw.replace(/s$/, ''); // normalize plural to singular
-    const value = parseInt(amount);
+    const unit = unitRaw.replace(/s$/, '');
+    const value = parseInt(amount, 10);
   
     const date = new Date(now);
   
@@ -20,10 +20,12 @@ const parseAgeToDate = (ageStr) => {
         date.setDate(now.getDate() - value);
         break;
       default:
-        return now; // fallback
+        return now;
     }
+  
+    // Round to nearest minute
+    date.setSeconds(0, 0);
   
     return date;
   };
-
   module.exports = { parseAgeToDate };

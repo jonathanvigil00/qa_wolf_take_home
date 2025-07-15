@@ -32,21 +32,16 @@ async function fetchArticles() {
     articles = [...articles, ...pageArticles];
 
     // // Next page
-    // let next = await page.$eval('a.morelink', el => el.getAttribute('href'));
-    // if (!next.startsWith('http')) {
-    //   next = `https://news.ycombinator.com/${next}`;
-    // }
-    // url = next;
     const nextLink = await page.$('a.morelink');
 
     if (!nextLink) {
-    console.log('Reached the last page or failed to find next page link.');
-    break;
+        console.log('Reached the last page or failed to find next page link.');
+        break;
     }
 
     let next = await nextLink.getAttribute('href');
     if (!next.startsWith('http')) {
-    next = `https://news.ycombinator.com/${next}`;
+        next = `https://news.ycombinator.com/${next}`;
     }
     url = next;
   }
@@ -54,9 +49,9 @@ async function fetchArticles() {
   await browser.close();
   articles = articles.slice(0, 100);
 
-//   const dataPath = path.join(__dirname, '..', 'data', 'articles.json');
-//   fs.mkdirSync(path.dirname(dataPath), { recursive: true });
-//   fs.writeFileSync(dataPath, JSON.stringify(articles, null, 2));
+  const dataPath = path.join(__dirname, '..', 'data', 'articles.json');
+  fs.mkdirSync(path.dirname(dataPath), { recursive: true });
+  fs.writeFileSync(dataPath, JSON.stringify(articles, null, 2));
 
   return articles;
 }
